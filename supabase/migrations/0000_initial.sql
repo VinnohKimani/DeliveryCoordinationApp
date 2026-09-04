@@ -48,9 +48,7 @@ CREATE POLICY "Users can read own data" ON public.users
 -- Dispatchers can read all users (needed to assign riders)
 CREATE POLICY "Dispatchers can read all users" ON public.users
   FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'role') = 'dispatcher'
   );
 
 -- Create deliveries table
@@ -75,23 +73,29 @@ ALTER TABLE public.deliveries ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Retailers can CRUD own deliveries" ON public.deliveries
   FOR ALL USING (auth.uid() = retailer_id);
 
--- Dispatchers can read and update all deliveries
-CREATE POLICY "Dispatchers can read and update all deliveries" ON public.deliveries
+-- Dispatchers can read all deliveries
+CREATE POLICY "Dispatchers can read all deliveries" ON public.deliveries
   FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher')
+    (auth.jwt() -> 'user_metadata' ->> 'role') = 'dispatcher'
   );
 
+-- Dispatchers can update all deliveries
 CREATE POLICY "Dispatchers can update all deliveries" ON public.deliveries
   FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher')
+    (auth.jwt() -> 'user_metadata' ->> 'role') = 'dispatcher'
   );
 
--- Riders can read and update deliveries assigned to them
+-- Riders can read assigned deliveries
 CREATE POLICY "Riders can read assigned deliveries" ON public.deliveries
-  FOR SELECT USING (auth.uid() = assigned_rider_id);
+  FOR SELECT USING (
+    assigned_rider_id = auth.uid()
+  );
 
+-- Riders can update assigned deliveries
 CREATE POLICY "Riders can update assigned deliveries" ON public.deliveries
-  FOR UPDATE USING (auth.uid() = assigned_rider_id);
+  FOR UPDATE USING (
+    assigned_rider_id = auth.uid()
+  );
 
 -- Create a trigger to sync auth.users on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
