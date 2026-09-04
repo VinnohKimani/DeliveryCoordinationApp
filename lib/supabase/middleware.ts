@@ -35,8 +35,35 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // We will handle protected routes logic here in Stage 3.
-  // For now, just return the response.
-  
+  const pathname = request.nextUrl.pathname
+
+  if (!user && pathname !== '/login' && pathname !== '/signup') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  if (user) {
+    const role = user.user_metadata?.role || 'retailer' // fallback
+
+    // If they are on the root or an auth page, redirect to their dashboard
+    if (pathname === '/' || pathname === '/login' || pathname === '/signup') {
+      const url = request.nextUrl.clone()
+      url.pathname = `/${role}`
+      return NextResponse.redirect(url)
+    }
+
+    // Optional: Protect role-specific routes from other roles
+    if (pathname.startsWith('/retailer') && role !== 'retailer') {
+      return NextResponse.redirect(new URL(`/${role}`, request.url))
+    }
+    if (pathname.startsWith('/dispatcher') && role !== 'dispatcher') {
+      return NextResponse.redirect(new URL(`/${role}`, request.url))
+    }
+    if (pathname.startsWith('/rider') && role !== 'rider') {
+      return NextResponse.redirect(new URL(`/${role}`, request.url))
+    }
+  }
+
   return supabaseResponse
 }
