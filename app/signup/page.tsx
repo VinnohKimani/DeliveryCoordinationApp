@@ -75,14 +75,6 @@ export default async function SignupPage({
           alt="Delivery Logistics Hero" 
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="relative z-20 max-w-2xl text-center px-12 pb-24">
-          <div className="inline-block bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-white/50">
-            <h2 className="text-3xl font-black text-slate-900 mb-4">Join the Network</h2>
-            <p className="text-lg text-slate-600 font-medium leading-relaxed">
-              Whether you're a business sending packages or a rider delivering them, Reflex is your ultimate tool for success.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )
