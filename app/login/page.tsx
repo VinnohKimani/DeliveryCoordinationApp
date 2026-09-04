@@ -7,49 +7,78 @@ export default async function LoginPage({
 }) {
   const { message } = await searchParams
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 mx-auto min-h-screen">
-      <form className="flex-1 flex flex-col w-full justify-center gap-4 text-gray-800">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-black text-blue-600 mb-2 tracking-tight">Reflex</h1>
-          <p className="text-gray-500">Sign in to coordinate deliveries</p>
-        </div>
-        
-        {message && (
-          <p className="bg-red-50 text-red-600 p-4 text-center text-sm rounded-md font-medium border border-red-200">
-            {message}
-          </p>
-        )}
+    <div className="flex min-h-screen bg-slate-50">
+      {/* Left side: Form */}
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-12 lg:flex-none lg:w-[500px] xl:w-[600px] bg-white shadow-2xl z-10 relative">
+        <div className="mx-auto w-full max-w-sm lg:max-w-md">
+          <div className="text-center mb-8">
+            <img src="/logo.jpg" alt="Reflex Logo" className="w-20 h-20 mx-auto rounded-2xl shadow-sm mb-6 border border-slate-100" />
+            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Reflex</h1>
+            <p className="text-slate-500 font-medium">Sign in to coordinate deliveries</p>
+          </div>
+          
+          <form className="flex flex-col gap-4 text-slate-800">
+            {message && (
+              <p className="bg-red-50 text-red-600 p-4 text-center text-sm rounded-xl font-bold border border-red-200 shadow-sm mb-2">
+                {message}
+              </p>
+            )}
 
-        <label className="text-sm font-semibold text-gray-700" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-sm font-semibold text-gray-700" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        
-        <button
-          formAction={login}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 text-foreground mb-2 font-medium"
-        >
-          Sign In
-        </button>
-        <div className="text-sm text-center mt-4 text-gray-500">
-          Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
+            <div>
+              <label className="text-sm font-bold text-slate-700 block mb-1.5" htmlFor="email">
+                Email Address
+              </label>
+              <input
+                className="w-full rounded-xl px-4 py-3 bg-slate-50 border border-slate-200 mb-2 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-bold text-slate-700 block mb-1.5" htmlFor="password">
+                Password
+              </label>
+              <input
+                className="w-full rounded-xl px-4 py-3 bg-slate-50 border border-slate-200 mb-6 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+            
+            <button
+              formAction={login}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold shadow-md shadow-blue-200 transition-all active:scale-[0.98]"
+            >
+              Sign In
+            </button>
+            <div className="text-sm font-medium text-center mt-6 text-slate-500">
+              Don't have an account? <a href="/signup" className="text-blue-600 hover:text-blue-700 hover:underline">Sign up for free</a>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
+
+      {/* Right side: Hero Image */}
+      <div className="hidden lg:flex flex-1 relative bg-slate-100 overflow-hidden items-center justify-center border-l border-slate-200">
+        <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply z-10" />
+        <img 
+          src="/hero.jpg" 
+          alt="Delivery Logistics Hero" 
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="relative z-20 max-w-2xl text-center px-12 pb-24">
+          <div className="inline-block bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-white/50">
+            <h2 className="text-3xl font-black text-slate-900 mb-4">Fast, Reliable Logistics Network</h2>
+            <p className="text-lg text-slate-600 font-medium leading-relaxed">
+              Track, manage, and coordinate all your deliveries seamlessly across the entire city with real-time updates and unified dashboards.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
