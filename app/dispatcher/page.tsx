@@ -55,10 +55,10 @@ export default async function DispatcherPage() {
               <table className="w-full text-left border-collapse">
                 <thead className="bg-slate-50 border-b border-slate-100">
                   <tr>
-                    <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-500">Delivery Details</th>
-                    <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-500">Destination</th>
-                    <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-500">Status</th>
-                    <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-500">Rider Assignment</th>
+                    <th className="p-4 font-bold text-xs uppercase  text-slate-500">Delivery Details</th>
+                    <th className="p-4 font-bold text-xs uppercase  text-slate-500">Destination</th>
+                    <th className="p-4 font-bold text-xs uppercase  text-slate-500">Status</th>
+                    <th className="p-4 font-bold text-xs uppercase  text-slate-500">Rider Assignment</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -85,7 +85,7 @@ export default async function DispatcherPage() {
                         </div>
                       </td>
                       <td className="p-4">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase  ${
                           d.status === 'Requested' ? 'bg-yellow-100 text-yellow-700' :
                           d.status === 'Assigned' ? 'bg-blue-100 text-blue-700' :
                           d.status === 'Picked Up' ? 'bg-purple-100 text-purple-700' :

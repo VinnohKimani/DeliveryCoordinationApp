@@ -73,7 +73,7 @@ export default async function RiderPage() {
                             {d.customer_phone}
                           </div>
                         </div>
-                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase  ${
                           d.status === 'Assigned' ? 'bg-blue-100 text-blue-700' :
                           d.status === 'Picked Up' ? 'bg-purple-100 text-purple-700' :
                           'bg-emerald-100 text-emerald-700'
@@ -88,18 +88,18 @@ export default async function RiderPage() {
                       <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 flex gap-3">
                         <MapPin className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Drop-off Location</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase  mb-0.5">Drop-off Location</p>
                           <p className="text-slate-800 font-medium">{d.address}</p>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Item Details</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase  mb-1">Item Details</p>
                           <p className="text-sm text-slate-700">{d.item_description}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Pickup From</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase  mb-1">Pickup From</p>
                           <p className="text-sm text-slate-700 font-medium">{d.retailer?.name}</p>
                           <p className="text-xs text-slate-500">{d.retailer?.phone}</p>
                         </div>
@@ -123,7 +123,7 @@ export default async function RiderPage() {
                       {d.status === 'Picked Up' && (
                         <div className="h-full flex flex-col items-center justify-center space-y-4">
                           <div className="text-center w-full bg-purple-50 p-3 rounded-xl border border-purple-100 mb-2">
-                            <p className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
+                            <p className="text-xs font-bold text-purple-600 uppercase  mb-1 flex items-center justify-center gap-1">
                               <QrCode className="w-3 h-3" />
                               Delivery Proof
                             </p>

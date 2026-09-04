@@ -108,7 +108,7 @@ export default async function RetailerPage() {
                           <h3 className="text-lg font-bold text-slate-900">{d.customer_name}</h3>
                           <p className="text-slate-500 text-sm font-medium">{d.customer_phone}</p>
                         </div>
-                        <span className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${
+                        <span className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase  flex items-center gap-1.5 ${
                           d.status === 'Requested' ? 'bg-yellow-100 text-yellow-700' :
                           d.status === 'Assigned' ? 'bg-blue-100 text-blue-700' :
                           d.status === 'Picked Up' ? 'bg-purple-100 text-purple-700' :
@@ -124,11 +124,11 @@ export default async function RetailerPage() {
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Destination</p>
+                          <p className="text-xs text-slate-400 font-semibold uppercase  mb-1">Destination</p>
                           <p className="text-sm text-slate-700">{d.address}</p>
                         </div>
                         <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Item Details</p>
+                          <p className="text-xs text-slate-400 font-semibold uppercase  mb-1">Item Details</p>
                           <p className="text-sm text-slate-700">{d.item_description}</p>
                         </div>
                       </div>
