@@ -104,8 +104,8 @@ export default async function DispatcherPage() {
                             <input type="hidden" name="delivery_id" value={d.id} />
                             <div className="relative flex-1 max-w-[200px]">
                               <Users className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
-                              <select name="rider_id" className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none cursor-pointer" required>
-                                <option value="" disabled selected>Select rider...</option>
+                              <select name="rider_id" defaultValue="" className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none cursor-pointer" required>
+                                <option value="" disabled>Select rider...</option>
                                 {riders?.map(r => (
                                   <option key={r.id} value={r.id}>{r.name}</option>
                                 ))}
