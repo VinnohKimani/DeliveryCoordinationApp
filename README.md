@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reflex - Delivery Coordination App
 
-## Getting Started
+Reflex is a lightweight, real-time delivery coordination application built for Kenyan retailers, dispatchers, and riders. It replaces fragmented WhatsApp groups with a unified, role-based dashboard using Next.js and Supabase.
 
-First, run the development server:
+## Setup Instructions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository:**
+   ```bash
+   git clone git@github.com:VinnohKimani/DeliveryCoordinationApp.git
+   cd DeliveryCoordinationApp
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Supabase Setup:**
+   - Create a new project on [Supabase](https://supabase.com).
+   - Go to the **SQL Editor** in your Supabase dashboard and paste the contents of `supabase/migrations/0000_initial.sql`. Run it to create tables, enums, triggers, and RLS policies.
+   - Go to **Project Settings -> API** and copy your Project URL and anon public key.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Environment Variables:**
+   - Copy `.env.local.example` to `.env.local`.
+   - Paste your Supabase URL and anon key:
+     ```env
+     NEXT_PUBLIC_SUPABASE_URL=your_project_url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+     ```
 
-## Learn More
+5. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Database Schema Explanation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `users`: Extends Supabase Auth users. Stores the `name`, `phone`, and `role` (retailer, dispatcher, rider). A trigger automatically inserts a row here when a user signs up.
+- `deliveries`: Stores delivery requests. 
+  - `retailer_id` links to the user who requested it.
+  - `assigned_rider_id` links to the rider (if assigned).
+  - `status` tracks the lifecycle: `Requested` -> `Assigned` -> `Picked Up` -> `Delivered`.
+  - `confirmation_code` is a 6-character unique string generated on creation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Row Level Security (RLS)
+- **Retailers** can only CRUD their own delivery requests.
+- **Dispatchers** can read and update all delivery requests (to assign riders).
+- **Riders** can only read and update deliveries specifically assigned to them.
 
-## Deploy on Vercel
+## Real-time Capabilities
+The application uses Supabase Realtime to instantly update dashboards when database rows change. We use Next.js App Router combined with `router.refresh()` in a small `RealtimeSubscriber` client component, providing event-driven, live updates with no polling required.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Known Trade-offs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Optimistic UI Updates:** Real-time sync relies on `router.refresh()`, which causes a quick background fetch to the server. While seamless, it does not do true local "optimistic" state updates (like Redux or React Query would). This was chosen for speed of development and to leverage Next.js Server Components deeply.
+2. **QR Scanner Reliability:** Browser-based QR scanning (`@yudiel/react-qr-scanner`) is highly dependent on device camera quality and lighting. Native apps usually provide a faster scanning experience.
+3. **No specialized Dispatcher matching:** Dispatchers manually select riders from a dropdown. In a scaled product, this would likely be automated based on rider proximity and load.
+4. **Basic Routing:** A single shared `middleware.ts` handles role-based redirects. It currently falls back gracefully, but in a massive app, role structures might require more complex routing groups (e.g., `(retailer)`, `(rider)`).
