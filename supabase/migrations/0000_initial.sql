@@ -1,0 +1,107 @@
+-- Create custom types
+CREATE TYPE user_role AS ENUM ('retailer', 'dispatcher', 'rider');
+CREATE TYPE delivery_status AS ENUM ('Requested', 'Assigned', 'Picked Up', 'Delivered');
+
+-- Create users table
+CREATE TABLE public.users (
+  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone TEXT,
+  role user_role NOT NULL DEFAULT 'retailer',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable RLS for users
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+
+-- Users can read their own data
+CREATE POLICY "Users can read own data" ON public.users
+  FOR SELECT USING (auth.uid() = id);
+
+-- Dispatchers can read all users (needed to assign riders)
+CREATE POLICY "Dispatchers can read all users" ON public.users
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher'
+    )
+  );
+
+-- Create deliveries table
+CREATE TABLE public.deliveries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  retailer_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  customer_name TEXT NOT NULL,
+  customer_phone TEXT NOT NULL,
+  address TEXT NOT NULL,
+  item_description TEXT NOT NULL,
+  status delivery_status NOT NULL DEFAULT 'Requested',
+  assigned_rider_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  confirmation_code TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Enable RLS for deliveries
+ALTER TABLE public.deliveries ENABLE ROW LEVEL SECURITY;
+
+-- Retailers can CRUD their own deliveries
+CREATE POLICY "Retailers can CRUD own deliveries" ON public.deliveries
+  FOR ALL USING (auth.uid() = retailer_id);
+
+-- Dispatchers can read and update all deliveries
+CREATE POLICY "Dispatchers can read and update all deliveries" ON public.deliveries
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher')
+  );
+
+CREATE POLICY "Dispatchers can update all deliveries" ON public.deliveries
+  FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'dispatcher')
+  );
+
+-- Riders can read and update deliveries assigned to them
+CREATE POLICY "Riders can read assigned deliveries" ON public.deliveries
+  FOR SELECT USING (auth.uid() = assigned_rider_id);
+
+CREATE POLICY "Riders can update assigned deliveries" ON public.deliveries
+  FOR UPDATE USING (auth.uid() = assigned_rider_id);
+
+-- Create a trigger to sync auth.users on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.users (id, name, phone, role)
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'name', 'New User'),
+    NEW.raw_user_meta_data->>'phone',
+    COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'retailer'::user_role)
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- Trigger for updated_at on users
+CREATE OR REPLACE FUNCTION set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_users_updated_at
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+
+CREATE TRIGGER set_deliveries_updated_at
+  BEFORE UPDATE ON public.deliveries
+  FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+
+-- Setup Realtime
+ALTER PUBLICATION supabase_realtime ADD TABLE public.deliveries;
