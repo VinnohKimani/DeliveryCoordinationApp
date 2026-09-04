@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { signOut } from '../actions'
 import { updateDeliveryStatus } from './actions'
 
+import QRScanner from '@/components/QRScanner'
+
 export default async function RiderPage() {
   const supabase = await createClient()
 
@@ -69,9 +71,7 @@ export default async function RiderPage() {
                       </form>
                     )}
                     {d.status === 'Picked Up' && (
-                      <div className="w-full bg-gray-200 text-gray-600 py-2 rounded font-medium text-center italic">
-                        Scan QR code to deliver (Stage 7)
-                      </div>
+                      <QRScanner />
                     )}
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { createDelivery } from './actions'
 import { signOut } from '../actions'
+import QRCodeDisplay from '@/components/QRCodeDisplay'
 
 export default async function RetailerPage() {
   const supabase = await createClient()
@@ -65,14 +66,21 @@ export default async function RetailerPage() {
                       <td className="p-4 text-sm text-gray-600">{d.address}</td>
                       <td className="p-4 text-sm text-gray-600">{d.item_description}</td>
                       <td className="p-4">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          d.status === 'Requested' ? 'bg-yellow-100 text-yellow-800' :
-                          d.status === 'Assigned' ? 'bg-blue-100 text-blue-800' :
-                          d.status === 'Picked Up' ? 'bg-purple-100 text-purple-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
-                          {d.status}
-                        </span>
+                        <div className="flex flex-col gap-2 items-start">
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            d.status === 'Requested' ? 'bg-yellow-100 text-yellow-800' :
+                            d.status === 'Assigned' ? 'bg-blue-100 text-blue-800' :
+                            d.status === 'Picked Up' ? 'bg-purple-100 text-purple-800' :
+                            'bg-green-100 text-green-800'
+                          }`}>
+                            {d.status}
+                          </span>
+                          {d.status !== 'Delivered' && (
+                            <div className="mt-2">
+                              <QRCodeDisplay code={d.confirmation_code} />
+                            </div>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
