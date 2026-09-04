@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createDelivery } from './actions'
 import { signOut } from '../actions'
 import QRCodeDisplay from '@/components/QRCodeDisplay'
+import RealtimeSubscriber from '@/components/RealtimeSubscriber'
 
 export default async function RetailerPage() {
   const supabase = await createClient()
@@ -26,6 +27,7 @@ export default async function RetailerPage() {
       </header>
 
       <main className="max-w-5xl mx-auto p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <RealtimeSubscriber />
         <div className="md:col-span-1">
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-lg font-bold mb-4">New Delivery</h2>

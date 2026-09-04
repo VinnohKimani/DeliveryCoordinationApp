@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '../actions'
 import { assignRider } from './actions'
+import RealtimeSubscriber from '@/components/RealtimeSubscriber'
 
 export default async function DispatcherPage() {
   const supabase = await createClient()
@@ -25,6 +26,7 @@ export default async function DispatcherPage() {
       </header>
 
       <main className="max-w-6xl mx-auto p-8">
+        <RealtimeSubscriber />
         <h2 className="text-xl font-bold mb-4">All Deliveries</h2>
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {deliveries?.length === 0 ? (

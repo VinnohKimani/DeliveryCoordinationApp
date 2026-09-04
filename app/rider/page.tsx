@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '../actions'
 import { updateDeliveryStatus } from './actions'
-
+import RealtimeSubscriber from '@/components/RealtimeSubscriber'
 import QRScanner from '@/components/QRScanner'
 
 export default async function RiderPage() {
@@ -27,6 +27,7 @@ export default async function RiderPage() {
       </header>
 
       <main className="max-w-4xl mx-auto p-8">
+        <RealtimeSubscriber />
         <h2 className="text-xl font-bold mb-4">Your Assigned Deliveries</h2>
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {deliveries?.length === 0 ? (
