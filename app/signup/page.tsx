@@ -21,19 +21,19 @@ export default async function SignupPage({
         )}
 
         <label className="text-md" htmlFor="name">Full Name</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-2" name="name" placeholder="Jane Doe" required />
+        <input className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" name="name" placeholder="Jane Doe" required />
 
-        <label className="text-md" htmlFor="phone">Phone Number</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-2" name="phone" placeholder="+254..." required />
+        <label className="text-sm font-semibold text-gray-700" htmlFor="phone">Phone Number</label>
+        <input className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" name="phone" placeholder="+254..." required />
 
-        <label className="text-md" htmlFor="email">Email</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-2" name="email" placeholder="you@example.com" required />
+        <label className="text-sm font-semibold text-gray-700" htmlFor="email">Email</label>
+        <input className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" name="email" placeholder="you@example.com" required />
         
-        <label className="text-md" htmlFor="password">Password</label>
-        <input className="rounded-md px-4 py-2 bg-inherit border mb-2" type="password" name="password" placeholder="••••••••" required />
+        <label className="text-sm font-semibold text-gray-700" htmlFor="password">Password</label>
+        <input className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" type="password" name="password" placeholder="••••••••" required />
         
-        <label className="text-md" htmlFor="role">Role</label>
-        <select className="rounded-md px-4 py-2 bg-inherit border mb-4" name="role" required defaultValue="retailer">
+        <label className="text-sm font-semibold text-gray-700" htmlFor="role">Role</label>
+        <select className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" name="role" required defaultValue="retailer">
           <option value="retailer">Retailer</option>
           <option value="dispatcher">Dispatcher</option>
           <option value="rider">Rider</option>

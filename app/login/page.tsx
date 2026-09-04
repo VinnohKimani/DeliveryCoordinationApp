@@ -20,20 +20,20 @@ export default async function LoginPage({
           </p>
         )}
 
-        <label className="text-md" htmlFor="email">
+        <label className="text-sm font-semibold text-gray-700" htmlFor="email">
           Email
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-2"
+          className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           name="email"
           placeholder="you@example.com"
           required
         />
-        <label className="text-md" htmlFor="password">
+        <label className="text-sm font-semibold text-gray-700" htmlFor="password">
           Password
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-4"
+          className="rounded-md px-4 py-2 bg-white border border-gray-300 mb-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           type="password"
           name="password"
           placeholder="••••••••"

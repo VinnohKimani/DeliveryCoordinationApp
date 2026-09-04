@@ -40,7 +40,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/signup?message=Could not create user')
+    redirect(`/signup?message=Could not create user: ${error.message}`)
   }
 
   redirect('/login?message=Check email to continue sign in process (or login if email confirmation is disabled)')
