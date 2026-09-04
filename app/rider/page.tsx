@@ -3,6 +3,7 @@ import { signOut } from '../actions'
 import { updateDeliveryStatus } from './actions'
 import RealtimeSubscriber from '@/components/RealtimeSubscriber'
 import QRScanner from '@/components/QRScanner'
+import { ClientForm } from '@/components/ClientForm'
 import { Bike, LogOut, MapPin, Phone, Package, CheckCircle, Clock, Truck, QrCode } from 'lucide-react'
 
 export default async function RiderPage() {
@@ -108,7 +109,7 @@ export default async function RiderPage() {
 
                     <div className="sm:w-64 shrink-0 flex flex-col justify-center border-t sm:border-t-0 sm:border-l border-slate-100 pt-6 sm:pt-0 sm:pl-6">
                       {d.status === 'Assigned' && (
-                        <form action={updateDeliveryStatus} className="h-full flex flex-col justify-center">
+                        <ClientForm action={updateDeliveryStatus} successMessage="Pickup confirmed!" className="h-full flex flex-col justify-center">
                           <input type="hidden" name="delivery_id" value={d.id} />
                           <input type="hidden" name="status" value="Picked Up" />
                           <div className="bg-blue-50 text-blue-700 p-4 rounded-xl text-sm font-medium text-center mb-4 border border-blue-100">
@@ -117,7 +118,7 @@ export default async function RiderPage() {
                           <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">
                             Confirm Pickup
                           </button>
-                        </form>
+                        </ClientForm>
                       )}
                       
                       {d.status === 'Picked Up' && (

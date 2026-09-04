@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Scanner } from '@yudiel/react-qr-scanner'
 import { confirmDelivery } from '@/app/rider/actions'
 import { QrCode, KeyRound } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 export default function QRScanner() {
   const [scanning, setScanning] = useState(false)
@@ -20,14 +21,24 @@ export default function QRScanner() {
     setScanning(false)
     setManualMode(false)
     
-    try {
-      const result = await confirmDelivery(text)
-      if (result.success) {
-        setSuccess('Delivery confirmed successfully!')
-        setTimeout(() => setSuccess(null), 3000)
-      } else {
-        setError(result.error || 'Invalid QR code')
+    // We create a promise so we can use toast.promise for automatic loading/success/error states
+    const scanPromise = confirmDelivery(text).then(result => {
+      if (!result.success) {
+        throw new Error(result.error || 'Invalid QR code')
       }
+      return result
+    })
+
+    toast.promise(scanPromise, {
+      loading: 'Verifying code...',
+      success: 'Delivery confirmed successfully!',
+      error: (err) => err.message || 'An error occurred'
+    })
+
+    try {
+      await scanPromise
+      setSuccess('Delivery confirmed successfully!')
+      setTimeout(() => setSuccess(null), 3000)
     } catch (e: any) {
       setError(e.message || 'An error occurred')
     }

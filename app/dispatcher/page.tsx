@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { signOut } from '../actions'
 import { assignRider } from './actions'
 import RealtimeSubscriber from '@/components/RealtimeSubscriber'
+import { ClientForm } from '@/components/ClientForm'
 import { LayoutDashboard, Users, LogOut, Truck, Clock, MapPin, Package, CheckCircle, UserPlus } from 'lucide-react'
 
 export default async function DispatcherPage() {
@@ -100,7 +101,7 @@ export default async function DispatcherPage() {
                       </td>
                       <td className="p-4">
                         {d.status === 'Requested' ? (
-                          <form action={assignRider} className="flex gap-2 items-center">
+                          <ClientForm action={assignRider} successMessage="Rider assigned successfully!" className="flex gap-2 items-center">
                             <input type="hidden" name="delivery_id" value={d.id} />
                             <div className="relative flex-1 max-w-[200px]">
                               <Users className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
@@ -115,7 +116,7 @@ export default async function DispatcherPage() {
                               <UserPlus className="w-4 h-4" />
                               Assign
                             </button>
-                          </form>
+                          </ClientForm>
                         ) : (
                           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-slate-500 text-sm font-medium border border-slate-200">
                             <CheckCircle className="w-4 h-4 text-emerald-500" />

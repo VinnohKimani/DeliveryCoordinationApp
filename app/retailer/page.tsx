@@ -3,6 +3,7 @@ import { createDelivery } from './actions'
 import { signOut } from '../actions'
 import QRCodeDisplay from '@/components/QRCodeDisplay'
 import RealtimeSubscriber from '@/components/RealtimeSubscriber'
+import { ClientForm } from '@/components/ClientForm'
 import { Package, User, MapPin, FileText, CheckCircle, Clock, Truck, UserCircle, LogOut } from 'lucide-react'
 
 export default async function RetailerPage() {
@@ -45,7 +46,7 @@ export default async function RetailerPage() {
               </span>
               New Delivery
             </h2>
-            <form action={createDelivery} className="flex flex-col gap-4">
+            <ClientForm action={createDelivery} successMessage="Delivery request created!" className="flex flex-col gap-4">
               <div>
                 <label className="text-sm font-semibold text-slate-600 mb-1 block">Customer Name</label>
                 <div className="relative">
@@ -81,7 +82,7 @@ export default async function RetailerPage() {
               <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 font-semibold shadow-md shadow-blue-200 hover:shadow-lg transition-all mt-2">
                 Create Request
               </button>
-            </form>
+            </ClientForm>
           </div>
         </div>
 
