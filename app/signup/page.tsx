@@ -8,11 +8,14 @@ export default async function SignupPage({
   const { message } = await searchParams
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 mx-auto min-h-screen">
-      <form className="flex-1 flex flex-col w-full justify-center gap-4 text-foreground">
-        <h1 className="text-3xl font-bold mb-4">Create Reflex Account</h1>
+      <form className="flex-1 flex flex-col w-full justify-center gap-4 text-gray-800">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-black text-green-600 mb-2 tracking-tight">Reflex</h1>
+          <p className="text-gray-500">Create your account</p>
+        </div>
         
         {message && (
-          <p className="bg-foreground/10 text-foreground p-4 text-center text-sm">
+          <p className="bg-red-50 text-red-600 p-4 text-center text-sm rounded-md font-medium border border-red-200">
             {message}
           </p>
         )}
