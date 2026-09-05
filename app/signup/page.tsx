@@ -1,4 +1,5 @@
 import { signup } from '../auth/actions'
+import { ClientForm } from '@/components/ClientForm'
 
 export default async function SignupPage({
   searchParams,
@@ -17,7 +18,7 @@ export default async function SignupPage({
             <p className="text-slate-500 font-medium">Join Reflex logistics network</p>
           </div>
           
-          <form className="flex flex-col gap-4 text-slate-800">
+          <ClientForm action={signup} successMessage="Creating account..." className="flex flex-col gap-4 text-slate-800">
             {message && (
               <p className="bg-red-50 text-red-600 p-4 text-center text-sm rounded-xl font-bold border border-red-200 shadow-sm mb-2">
                 {message}
@@ -54,7 +55,6 @@ export default async function SignupPage({
             </div>
             
             <button
-              formAction={signup}
               className="w-full bg-slate-900 hover:bg-black text-white rounded-xl px-4 py-3 font-bold shadow-md shadow-slate-200 transition-all active:scale-[0.98]"
             >
               Sign Up
@@ -63,7 +63,7 @@ export default async function SignupPage({
             <div className="text-sm font-medium text-center mt-4 text-slate-500">
               Already have an account? <a href="/login" className="text-blue-600 hover:text-blue-700 hover:underline">Log in</a>
             </div>
-          </form>
+          </ClientForm>
         </div>
       </div>
 

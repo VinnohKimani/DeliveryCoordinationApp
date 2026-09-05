@@ -13,20 +13,20 @@ export function ClientForm({ action, successMessage, loadingMessage = "Processin
   const ref = useRef<HTMLFormElement>(null)
   
   async function handleSubmit(formData: FormData) {
-    const promise = action(formData)
-    
-    toast.promise(promise, {
-      loading: loadingMessage,
-      success: successMessage,
-      error: (err: any) => err.message || 'An error occurred',
-    })
+    const toastId = toast.loading(loadingMessage)
     
     try {
-      await promise
-      // Reset the form if the submission was successful
+      await action(formData)
+      toast.success(successMessage, { id: toastId })
       ref.current?.reset()
-    } catch (e) {
-      // The error is handled and displayed by toast.promise
+    } catch (e: any) {
+      if (e.message === 'NEXT_REDIRECT') {
+        // If the action redirects, we treat it as a success and let Next.js handle the navigation
+        toast.success(successMessage, { id: toastId })
+        throw e;
+      } else {
+        toast.error(e.message || 'An error occurred', { id: toastId })
+      }
     }
   }
 

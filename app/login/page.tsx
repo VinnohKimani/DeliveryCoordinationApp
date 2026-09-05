@@ -1,4 +1,5 @@
 import { login } from '../auth/actions'
+import { ClientForm } from '@/components/ClientForm'
 
 export default async function LoginPage({
   searchParams,
@@ -17,7 +18,7 @@ export default async function LoginPage({
             <p className="text-slate-500 font-medium">Sign in to coordinate deliveries</p>
           </div>
           
-          <form className="flex flex-col gap-4 text-slate-800">
+          <ClientForm action={login} successMessage="Logging in..." className="flex flex-col gap-4 text-slate-800">
             {message && (
               <p className="bg-red-50 text-red-600 p-4 text-center text-sm rounded-xl font-bold border border-red-200 shadow-sm mb-2">
                 {message}
@@ -50,7 +51,6 @@ export default async function LoginPage({
             </div>
             
             <button
-              formAction={login}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold shadow-md shadow-blue-200 transition-all active:scale-[0.98]"
             >
               Sign In
@@ -58,7 +58,7 @@ export default async function LoginPage({
             <div className="text-sm font-medium text-center mt-6 text-slate-500">
               Don't have an account? <a href="/signup" className="text-blue-600 hover:text-blue-700 hover:underline">Sign up for free</a>
             </div>
-          </form>
+          </ClientForm>
         </div>
       </div>
 

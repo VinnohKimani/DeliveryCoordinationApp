@@ -14,7 +14,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    redirect('/login?message=Could not authenticate user')
+    throw new Error('Could not authenticate user')
   }
 
   // Redirect to a role-based dashboard using middleware or just / 
@@ -40,7 +40,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect(`/signup?message=Could not create user: ${error.message}`)
+    throw new Error(`Could not create user: ${error.message}`)
   }
 
   redirect('/login?message=Check email to continue sign in process (or login if email confirmation is disabled)')
