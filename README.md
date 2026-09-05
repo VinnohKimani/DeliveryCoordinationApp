@@ -34,6 +34,48 @@ Reflex is a lightweight, real-time delivery coordination application built for r
    ```
    Open [http://localhost:3000](http://localhost:3000) with your browser.
 
+## System Architecture & Delivery Flow
+
+The following diagrams illustrate the lifecycle of a delivery request from creation to fulfillment.
+
+### Delivery Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Requested: Retailer creates delivery
+    Requested --> Assigned: Dispatcher assigns Rider
+    Assigned --> Picked_Up: Rider confirms pickup
+    Picked_Up --> Delivered: Rider scans Customer QR / Enters PIN
+    Delivered --> [*]
+```
+
+### Role Interaction Flow
+
+```mermaid
+sequenceDiagram
+    participant Retailer
+    participant System as Reflex App
+    participant Dispatcher
+    participant Rider
+    participant Customer
+
+    Retailer->>System: 1. Creates Delivery Request
+    System-->>Retailer: Generates 6-character Code
+    Note over Retailer,Customer: The Customer receives this Code (e.g. via SMS)
+    
+    System->>Dispatcher: Real-time update (New 'Requested' Delivery)
+    Dispatcher->>System: 2. Assigns available Rider
+    System->>Rider: Real-time update (New 'Assigned' Route)
+    
+    Rider->>System: 3. Confirms Pickup at Retailer
+    System-->>Rider: Status changes to 'Picked Up'
+    
+    Rider->>Customer: 4. Arrives at destination
+    Customer-->>Rider: Presents 6-character Code (or QR Code)
+    Rider->>System: Scans QR / Enters Code Manually
+    System-->>Rider: Verification Success (Marked as 'Delivered')
+```
+
 ## Features & Workflows
 
 ### 1. Retailers (The Senders)
