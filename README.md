@@ -108,3 +108,4 @@ Security is handled at the database level to ensure data privacy:
 
 ## Real-time Capabilities
 The application uses **Supabase Realtime** to instantly update dashboards when database rows change. We use the Next.js App Router combined with `router.refresh()` in a small `RealtimeSubscriber` client component, providing event-driven, live updates across all open browsers with no manual polling required.
+ 
